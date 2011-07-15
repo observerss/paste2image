@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <title>Paste2Image, paste text, get image</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/jquery-ui.min.js"></script>
+        <script src="/static/js/jquery.ui.selectbox.js"></script>
+        <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />
+        <style type="text/css">
+        body{
+            width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Helvetica, Arial, sans-serif;
+            background-color: #eee;
+            color: #444;
+            font-size: 90%;
+        }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <h2 class="ui-widget">
+            <a href="/"><img src="/static/logo.png"></a>
+        </h2>
+        <p class="ui-widget">Paste text into the box below, get an image immediately</p>
+        <form class="pasteform" action="/paste" method="post">
+            <div><textarea class="ui-widget" name="content" rows="8" cols="50"></textarea></div>
+            <div>
+                <select name="language">
+                    <option value='text'>Select Langueage(Highlight) ...</option>
+                    <option value='text' selected>Plain Text / Other</option>
+                    <option value='php'>PHP</option>
+                    <option value='mysql'>MySQL</option>
+                    <option value='javascript'>Javascript</option>
+                    <option value='python'>Python</option>
+
+                    <option value='ruby'>Ruby</option>
+                    <option value='--'>-----------------------</option>
+                    <option value='actionscript'>Actionscript</option>
+                    <option value='ada'>Ada</option>
+                    <option value='apache'>Apache Config</option>
+                    <option value='applescript'>AppleScript</option>
+
+                    <option value='asm'>Assembly</option>
+                    <option value='asp'>ASP</option>
+                    <option value='bash'>Bash</option>
+                    <option value='c'>C</option>
+                    <option value='cfm'>Cold Fusion</option>
+                    <option value='cpp'>C++</option>
+
+                    <option value='csharp'>C#</option>
+                    <option value='css'>CSS</option>
+                    <option value='d'>D</option>
+                    <option value='delphi'>Delphi</option>
+                    <option value='diff'>UNIX Diff</option>
+                    <option value='eiffel'>Eiffel</option>
+
+                    <option value='fortran'>Fortran</option>
+                    <option value='html4strict'>HTML 4 Strict</option>
+                    <option value='ini'>Ini</option>
+                    <option value='java'>Java</option>
+                    <option value='java5'>Java5</option>
+                    <option value='latex'>LaTeX</option>
+
+                    <option value='lisp'>LISP</option>
+                    <option value='lua'>Lua</option>
+                    <option value='matlab'>MATLAB</option>
+                    <option value='perl'>Perl</option>
+                    <option value='qbasic'>QBasic / QuickBASIC</option>
+                    <option value='robots'>Robots</option>
+
+                    <option value='sql'>SQL</option>
+                    <option value='tcl'>TCL</option>
+                    <option value='vb'>Visual BASIC</option>
+                    <option value='vbnet'>VB.NET</option>
+                    <option value='winbatch'>Winbatch</option>
+                    <option value='xml'>XML</option>
+                </select>
+                <select name="style">
+                    <option value="friendly">Select a Style ...</option>
+                    <option>default</option>
+                    <option>emacs</option>
+                    <option selected>friendly</option>
+                    <option>colorful</option>
+                    <option>autumn</option>
+                    <option>murphy</option>
+                    <option>manni</option>
+                    <option>monokai</option>
+                    <option>perldoc</option>
+                    <option>pastie</option>
+                    <option>borland</option>
+                    <option>trac</option>
+                    <option>native</option>
+                    <option>fruity</option>
+                    <option>bw</option>
+                    <option>vim</option>
+                    <option>vs</option>
+                    <option>tango</option>
+                </select>
+                <br>
+                <select name="font_name">
+                    <option value="Microsoft YaHei">Select a Font ...</option>
+                    <option value="DejaVu Sans YuanTi Mono" selected>Yuanti MONO(方正等宽准圆)</option>
+                    <option>DejaVu Sans Mono(English)</option>
+                    <option value="TakaoPGothic">TakaoPGothic(日文字体)</option>
+                    <option value="Microsoft YaHei">Microsoft YaHei(微软雅黑)</option>
+                    <option value="AR PL UKai CN">AR PL UKai CN(楷体)</option>
+                    <option value="WenQuanYi Zen Hei">WQY Zen Hei(文泉驿正黑)</option>
+                    <option value="WenQuanYi Zen Hei Mono">WQY MONO(文泉驿等宽正黑)</option>
+                </select>
+                <select name="font_size">
+                    <option value="14" selected>Select Font Size ...</option>
+                    <option>12</option>
+                    <option selected>14</option>
+                    <option>16</option>
+                    <option>18</option>
+                    <option>20</option>
+                    <option>22</option>
+                    <option>24</option>
+                    <option>26</option>
+                    <option>28</option>
+                    <option>30</option>
+                    <option>32</option>
+                </select>
+            </div>
+            <p>
+            <div>
+                <input type="checkbox" name="auto_newline" id="check2" checked><label for="check2">Auto Newline</label>
+                <input type="checkbox" name="line_numbers" id="check1" checked><label for="check1">Line Numbers</label>
+                <input type="submit" value="Click Here to Paste">
+            </div>
+        </form>
+        <div class="usage">
+            <p class="ui-widget">Usage:</p>
+            <ul class="ui-widget" id="sortable">
+                <li>Please use *DejaVu Sans Mono* whenever pasting *ASCII* text</li>
+                <li>If you want to highlight certain lines of code, just prepend '^^' to the very start of the line(s).</li>
+                <li>CJK Charsets is supported, simply select Microsoft YaHei/AR PL UKai CN/WenQuanYi Zen Hei as font</li>
+            </ul>
+        </div>
+        <script>
+            $("input:checkbox").button();
+            $("input:submit").button();
+            $("select").selectbox();
+            $("#sortable").sortable();
+            $("#sortable").disableSelection();
+        </script>
+        &copy; 2011 paste2image.com
+    </div>
+    </body>
+</html>
