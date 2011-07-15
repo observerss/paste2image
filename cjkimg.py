@@ -434,6 +434,20 @@ class ImageFormatter(Formatter):
         """
         self.drawables.append((pos, text, font, kw))
 
+    def _get_len(self,text):
+        #chinese
+        l = 0
+        for c in text:
+            try:
+                c.decode("ascii")
+                l += 0.5
+            except:
+                l += 1
+        if self.fontw*1.3>self.fonth:
+            return int(l+1)
+        else:
+            return int(l*2)
+
     def _create_drawables(self, tokensource):
         """
         Create drawables for the token content.
@@ -458,7 +472,7 @@ class ImageFormatter(Formatter):
                         font = self._get_style_font(style),
                         fill = self._get_text_color(style)
                     )
-                    charno += len(temp)
+                    charno += self._get_len(temp)
                     maxcharno = max(maxcharno, charno)
                 if line.endswith('\n'):
                     # add a line for each extra line in the value
