@@ -4,6 +4,7 @@ Paste2Image
 :Info: Paste2Image is webapp which can convert text to image.
 :Author: scv2duke (http://github.com/observerss)
 :License: Paste2Image is licensed under the Apache License, Verion 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html).
+:Demo: http://paste2image.com
 
 About
 =====
