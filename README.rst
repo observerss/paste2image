@@ -25,7 +25,8 @@ Install Mongodb
 
 Then clone this repository and run 
 
-- python paste2image.py
+- git clone git://github.com/observerss/paste2image.git
+- python paste2image.py --port=8888
 
 visit http://localhost:8888 for test
 
