@@ -6,21 +6,28 @@ Paste2Image
 
 About
 =====
-Paste2Image is webapp which can convert text to image.
-Paste2Image is based on Tornado.web + MongoEngine + MongoDB
-This can be a very simple demonstration of how these tools can work together.
-There's no documentation except the source code itself.
+- Paste2Image is webapp which can convert text to image.
+- Paste2Image is based on Tornado.web + MongoEngine + MongoDB
+- This can be a very simple demonstration of how these tools can work together.
+- There's no documentation except the source code itself.
 
 Installation
 ============
 Make sure you have the following packages installed
-``sudo apt-get install python-setuptools python-imaging``
-``sudo easy_install -U mongoengine tornado pygments``
-Mongodb@Ubuntu/Debian( http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages )
 
-Then clone this repository
-``python paste2image.py``
-Finally visit http://localhost:8888 for test
+- sudo apt-get install python-setuptools python-imaging
+- sudo easy_install -U mongoengine tornado pygments
+
+Install Mongodb
+
+-Ubuntu/Debian( http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages )
+-Centos/Fedora( http://www.mongodb.org/display/DOCS/CentOS+and+Fedora+Packages )
+
+Then clone this repository and run 
+
+- python paste2image.py
+
+visit http://localhost:8888 for test
 
 Dependencies
 ============
