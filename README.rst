@@ -20,8 +20,8 @@ Make sure you have the following packages installed
 
 Install Mongodb
 
--Ubuntu/Debian( http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages )
--Centos/Fedora( http://www.mongodb.org/display/DOCS/CentOS+and+Fedora+Packages )
+- Ubuntu/Debian( http://www.mongodb.org/display/DOCS/Ubuntu+and+Debian+packages )
+- Centos/Fedora( http://www.mongodb.org/display/DOCS/CentOS+and+Fedora+Packages )
 
 Then clone this repository and run 
 
