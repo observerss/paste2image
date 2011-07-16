@@ -25,8 +25,10 @@
             <a href="/"><img src="/static/logo.png"></a>
         </h2>
         <a href="{{ imglink }}"><img src="{{ imglink }}"/></a><p>
+        <a id="rt" href="/rawtext/{{ pid }}" target="_blank">Get Raw Text</a>
         <a id="pa" href="/">Paste Another!</a>
         <script>
+            $("#rt").button();
             $("#pa").button();
         </script>
         <p>

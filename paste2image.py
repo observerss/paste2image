@@ -134,7 +134,7 @@ class ViewImageHandler(tornado.web.RequestHandler):
         if not sep:
             imglink = "/view/"+thepid.split('.')[0]+".png"
             print imglink
-            html = loader.load("pasted.html").generate(imglink=imglink)
+            html = loader.load("pasted.html").generate(imglink=imglink,pid=thepid.split('.')[0])
             self.finish(html)
             return
         pool = self.application.settings.get('pool')
@@ -144,6 +144,14 @@ class ViewImageHandler(tornado.web.RequestHandler):
         content_type,data = data
         self.set_header('Content-Type',content_type)
         self.finish(data)
+
+class RawTextHandler(tornado.web.RequestHandler):
+    def get(self,pid):
+        try:
+            p = Pasted.objects.get(pid=pid)
+            self.write(p.content)
+        except:
+            self.write('')
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -155,6 +163,7 @@ def main():
     application = tornado.web.Application([
         (r"/view/(.*)", ViewImageHandler),
         (r"/paste", PasteHandler),
+        (r"/rawtext/(.*)",RawTextHandler),
         (r"/", MainHandler),
     ],
         static_path=os.path.join(os.path.dirname(__file__),"static"),
