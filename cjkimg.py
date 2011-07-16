@@ -435,18 +435,7 @@ class ImageFormatter(Formatter):
         self.drawables.append((pos, text, font, kw))
 
     def _get_len(self,text):
-        #chinese
-        l = 0
-        for c in text:
-            try:
-                c.decode("ascii")
-                l += 0.5
-            except:
-                l += 1
-        if self.fontw*1.3>self.fonth:
-            return int(l+1)
-        else:
-            return int(l*2)
+        return int(self.fonts.fonts['NORMAL'].getsize(text)[0]/self.fontw)+1
 
     def _create_drawables(self, tokensource):
         """
