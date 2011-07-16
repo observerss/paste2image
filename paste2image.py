@@ -148,6 +148,7 @@ class ViewImageHandler(tornado.web.RequestHandler):
 class RawTextHandler(tornado.web.RequestHandler):
     def get(self,pid):
         try:
+            self.set_header('Content-Type','text/plain')
             p = Pasted.objects.get(pid=pid)
             self.write(p.content)
         except:
