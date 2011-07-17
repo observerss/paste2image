@@ -42,15 +42,6 @@ def text2image(pid,content,language,style,font_name,font_size,line_numbers,hl_li
                 line_numbers=line_numbers,
                 hl_lines=hl_lines
         )
-        if language != "text":
-            image_formatter.fontw,image_formatter.fonth = image_formatter.fonts.fonts['NORMAL'].getsize('M')
-        else:
-            try:
-                content.decode("ascii")
-                image_formatter.fontw,image_formatter.fonth = image_formatter.fonts.fonts['NORMAL'].getsize('M')
-            except:
-                #do nothing
-                pass
         result = highlight(
             content,
             get_lexer_by_name(language),
