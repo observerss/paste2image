@@ -62,9 +62,10 @@ class PasteHandler(tornado.web.RequestHandler):
 
         lines = p.content.split('\n')
         
-        auto_newline = self.get_argument("auto_newline",False)
+        auto_newline = self.get_argument("auto_newline",True)
+        linebreak = self.get_argument("line_break",80)
+
         if auto_newline:
-            linebreak = 80
             newlines = []
             for line in lines:
                 prefix = ''

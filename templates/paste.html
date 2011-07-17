@@ -3,8 +3,6 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <title>Paste2Image, paste text, get image</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/jquery-ui.min.js"></script>
         <script src="/static/js/jquery.ui.selectbox.js"></script>
@@ -20,6 +18,26 @@
             color: #444;
             font-size: 90%;
         }
+        select {
+            width: 195px;
+        }
+        .paste{
+            display: block;
+            width: 600px;
+        }
+        #to_paste {
+            width: 100%;
+        }
+        .ui-autocomplete-input {
+            width: 155px;
+        }
+        .text{
+            width: 30px;
+            text-align: right;
+        }
+        .submit{
+            float:right;
+        }
         </style>
     </head>
     <body>
@@ -27,9 +45,11 @@
         <h2 class="ui-widget">
             <a href="/"><img src="/static/logo.png"></a>
         </h2>
+        <div class="paste">
         <p class="ui-widget">Paste text into the box below, get an image immediately</p>
         <form class="pasteform" action="/paste" method="post">
-            <div><textarea class="ui-widget" name="content" rows="8" cols="50"></textarea></div>
+            <div><textarea id="to_paste" class="ui-widget" name="content" rows="8" cols="2"></textarea></div>
+            <p>
             <div>
                 <select name="language">
                     <option value='text'>Select Langueage(Highlight) ...</option>
@@ -81,6 +101,16 @@
                     <option value='winbatch'>Winbatch</option>
                     <option value='xml'>XML</option>
                 </select>
+                <select name="font_name">
+                    <option value="Microsoft YaHei">Select a Font ...</option>
+                    <option value="DejaVu Sans YuanTi Mono" selected>Yuanti MONO(方正等宽准圆)</option>
+                    <option value="DejaVu Sans Mono">DejaVu Sans Mono(English)</option>
+                    <option value="TakaoPGothic">TakaoPGothic(日文字体)</option>
+                    <option value="Microsoft YaHei">Microsoft YaHei(微软雅黑)</option>
+                    <option value="AR PL UKai CN">AR PL UKai CN(楷体)</option>
+                    <option value="WenQuanYi Zen Hei">WQY Zen Hei(文泉驿正黑)</option>
+                    <option value="WenQuanYi Zen Hei Mono">WQY MONO(文泉驿等宽正黑)</option>
+                </select>
                 <select name="style">
                     <option value="friendly">Select a Style ...</option>
                     <option>default</option>
@@ -102,39 +132,14 @@
                     <option>vs</option>
                     <option>tango</option>
                 </select>
-                <br>
-                <select name="font_name">
-                    <option value="Microsoft YaHei">Select a Font ...</option>
-                    <option value="DejaVu Sans YuanTi Mono" selected>Yuanti MONO(方正等宽准圆)</option>
-                    <option value="DejaVu Sans Mono">DejaVu Sans Mono(English)</option>
-                    <option value="TakaoPGothic">TakaoPGothic(日文字体)</option>
-                    <option value="Microsoft YaHei">Microsoft YaHei(微软雅黑)</option>
-                    <option value="AR PL UKai CN">AR PL UKai CN(楷体)</option>
-                    <option value="WenQuanYi Zen Hei">WQY Zen Hei(文泉驿正黑)</option>
-                    <option value="WenQuanYi Zen Hei Mono">WQY MONO(文泉驿等宽正黑)</option>
-                </select>
-                <select name="font_size">
-                    <option value="14" selected>Select Font Size ...</option>
-                    <option>12</option>
-                    <option selected>14</option>
-                    <option>16</option>
-                    <option>18</option>
-                    <option>20</option>
-                    <option>22</option>
-                    <option>24</option>
-                    <option>26</option>
-                    <option>28</option>
-                    <option>30</option>
-                    <option>32</option>
-                </select>
-            </div>
-            <p>
-            <div>
-                <input type="checkbox" name="auto_newline" id="check2" checked><label for="check2">Auto Newline</label>
+                <p>
+                Font Size <input class="text" type="text" name="font_size" value="14" />
+                Line Break <input class="text" type="text" name="line_break" value="80" />
                 <input type="checkbox" name="line_numbers" id="check1" checked><label for="check1">Line Numbers</label>
-                <input type="submit" value="Click Here to Proceed">
+                <input class="submit" type="submit" value="Submit">
             </div>
         </form>
+        </div>
         <div class="usage">
             <p class="ui-widget">Usage:</p>
             <ul class="ui-widget" id="sortable">
@@ -144,11 +149,24 @@
             </ul>
         </div>
         <script>
-            $("input:checkbox").button();
-            $("input:submit").button();
-            $("select").selectbox();
+            //$("input:checkbox").button();
+            //$("input:submit").button();
+            //$("select").selectbox();
             $("#sortable").sortable();
             $("#sortable").disableSelection();
+            $(".text").click( function (){
+                this.value="";
+            });
+            $(".text[name='font_size']").blur( function (){
+                if (this.value==""){
+                    this.value = 14;
+                }
+            });
+            $(".text[name='line_break']").blur( function (){
+                if (this.value==""){
+                    this.value = 80;
+                }
+            });
         </script>
         &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image">get source code</a>
     </div>
