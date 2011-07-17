@@ -14,7 +14,7 @@ def random_string(length=6):
     return ''.join(s)
 
 class Pasted(Document):
-    pid = StringField(max_length=65536)
+    pid = StringField(max_length=8)
     content = StringField(max_length=65536)
     created = DateTimeField(default=datetime.now)
     image = FileField()
