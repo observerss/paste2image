@@ -29,8 +29,10 @@ def text2image(pid,content,language,style,font_name,font_size,line_numbers,hl_li
     from pygments.lexers import get_lexer_by_name
     from cjkimg import ImageFormatter
     from StringIO import StringIO
+    #from unicode_remap import convert see descriptions in unicode_remap
 
     try:
+        #content = convert(content)
         p = Pasted.objects.get(pid=pid)
         image_formatter = ImageFormatter(
                 image_format="png",
