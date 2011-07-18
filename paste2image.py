@@ -28,6 +28,8 @@ def text2image(pid,content,language,style,font_name,font_size,line_numbers,hl_li
     from pygments import highlight
     from pygments.lexers import get_lexer_by_name
     from cjkimg import ImageFormatter
+    #from pygments.formatters import ImageFormatter
+    from PIL import Image
     from StringIO import StringIO
     #from unicode_remap import convert see descriptions in unicode_remap
 
@@ -47,6 +49,14 @@ def text2image(pid,content,language,style,font_name,font_size,line_numbers,hl_li
             get_lexer_by_name(language),
             image_formatter
         )
+        #making watermark
+        im = Image.open(StringIO(result))
+        mark = Image.open('static/overlay.png')
+        im.paste(mark,(im.size[0]-mark.size[0],im.size[1]-mark.size[1]),mark)
+        result = StringIO()
+        im.save(result,"png")
+        result = result.getvalue()
+        
         p.image.put( result, filename="%s.png"%p.pid, content_type="image/png" ) 
         p.save()
     except Exception,what:
@@ -62,33 +72,7 @@ class PasteHandler(tornado.web.RequestHandler):
 
         lines = p.content.split('\n')
         
-        auto_newline = self.get_argument("auto_newline",True)
-        linebreak = self.get_argument("line_break",80)
-
-        if auto_newline:
-            newlines = []
-            for line in lines:
-                prefix = ''
-                if line.startswith('^^'):
-                    prefix = '^^'
-                if prefix:
-                    newlines.append(prefix+line[2:linebreak])
-                else:
-                    newlines.append(prefix+line[:linebreak])
-                while len(line)>linebreak:
-                    line = line[linebreak:]
-                    newlines.append(prefix+line[:linebreak])
-            lines = newlines
-
-        hl_lines = []
-        newlines = []
-        for i in range(len(lines)):
-            if lines[i].startswith('^^'):
-                newlines.append(lines[i][2:])
-                hl_lines.append(i+1)
-            else:
-                newlines.append(lines[i])
-        lines = newlines
+        lines,hl_lines = self.format_lines(lines)
 
         pool = self.application.settings.get('pool')
         pool.apply_async( text2image, 
@@ -107,6 +91,52 @@ class PasteHandler(tornado.web.RequestHandler):
 
     def on_processed(self,pid):
         self.redirect("/view/%s"%pid)
+
+    def format_lines(self,lines):
+        from cjkimg import ImageFormatter
+        try:
+            linebreak = int(self.get_argument("line_break",80))
+        except:
+            linebreak = 80
+        
+        imf = ImageFormatter(
+                image_format="png",
+                style="default",
+                font_name = self.get_argument("font_name","DejaVu Sans YuanTi Mono"),
+                font_size = self.get_argument("font_size",14),
+        )
+        font = imf.fonts.fonts['NORMAL']
+        width = font.getsize('M')[0]*linebreak
+
+        newlines = []
+        for line in lines:
+            prefix = ''
+            if line.startswith('^^'):
+                prefix = '^^'
+                line = line[2:]
+            widths = [ font.getsize(x)[0] for x in line ]
+            for i in range(len(widths)-1):
+                widths[i+1]+=widths[i]
+            from bisect import bisect
+            curwidth = 0
+            index1 = 0
+            while curwidth <= widths[-1]:
+                index2 = bisect(widths,curwidth+width)
+                newlines.append(prefix+line[index1:index2])
+                index1 = index2
+                curwidth += width
+        lines = newlines
+
+        hl_lines = []
+        newlines = []
+        for i in range(len(lines)):
+            if lines[i].startswith('^^'):
+                newlines.append(lines[i][2:])
+                hl_lines.append(i+1)
+            else:
+                newlines.append(lines[i])
+        lines = newlines
+        return lines,hl_lines
 
 def file_read(pid):
     try:
@@ -127,7 +157,6 @@ class ViewImageHandler(tornado.web.RequestHandler):
         pid,sep,name = thepid.rpartition(".")
         if not sep:
             imglink = "/view/"+thepid.split('.')[0]+".png"
-            print imglink
             html = loader.load("pasted.html").generate(imglink=imglink,pid=thepid.split('.')[0])
             self.finish(html)
             return

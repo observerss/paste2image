@@ -168,8 +168,7 @@ class FontManager(object):
         """
         Get the character size.
         """
-        return self.fonts['NORMAL'].getsize(u'我')
-        #return self.fonts['NORMAL'].getsize('M')
+        return self.fonts['NORMAL'].getsize('M')
 
     def get_font(self, bold, oblique):
         """
@@ -434,9 +433,6 @@ class ImageFormatter(Formatter):
         """
         self.drawables.append((pos, text, font, kw))
 
-    def _get_len(self,text):
-        return int(self.fonts.fonts['NORMAL'].getsize(text)[0]/self.fontw)+1
-
     def _create_drawables(self, tokensource):
         """
         Create drawables for the token content.
@@ -461,7 +457,7 @@ class ImageFormatter(Formatter):
                         font = self._get_style_font(style),
                         fill = self._get_text_color(style)
                     )
-                    charno += self._get_len(temp)
+                    charno += self.fonts.fonts['NORMAL'].getsize(temp)[0]/self.fontw
                     maxcharno = max(maxcharno, charno)
                 if line.endswith('\n'):
                     # add a line for each extra line in the value
