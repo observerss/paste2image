@@ -171,9 +171,11 @@ class ViewImageHandler(tornado.web.RequestHandler):
 class RawTextHandler(tornado.web.RequestHandler):
     def get(self,pid):
         try:
-            self.set_header('Content-Type','text/plain; charset=utf-8')
+            self.set_header('Content-Type','text/html; charset=utf-8')
             p = Pasted.objects.get(pid=pid)
-            self.write(p.content)
+            content = u''.join( [ '&#'+str(ord(x))+';' for x in p.content ] )
+            content = '<html><body><pre>' + content + '</pre></html>'
+            self.write(content)
         except:
             self.write('')
 
