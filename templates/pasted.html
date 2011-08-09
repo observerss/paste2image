@@ -18,6 +18,40 @@
             color: #444;
             font-size: 90%;
         }
+        .links_container{
+            float: left;
+            border_radius:3px 3px 3px 3px;
+            margin: 5px 5px;
+            width: 360px;
+            text-align: left;
+            color: #999999;
+            cursor: default;
+        }
+        .left {
+            margin: 5px;
+            float: left;
+        }
+        .right {
+            float: right;
+        }
+        .viewer_links {
+            border: 1px soli #CCCCCC;
+            border-radius: 2px 2px 2px 2px;
+            color: #0044CC;
+            font-size: 12px;
+            height: 18px;
+            line-height: 18px;
+            cursor: pointer;
+            overflow: hidden;
+            text-shadow: none;
+        }
+        input {
+            width: 255px;
+        }
+        #tx-raw{
+            width: 100%;
+            height: 100%;
+        }
         </style>
     </head>
     <body>
@@ -25,11 +59,72 @@
             <a href="/"><img src="/static/logo.png"></a>
         </h2>
         <a href="{{ imglink }}"><img src="{{ imglink }}"/></a><p>
-        <a id="pa" href="/">Paste Another!</a>
+        <div class="links_container">
+            <div class="left">
+                Viewer Link <input class="viewer_links" name="View Link" value="{{ viewlink }}"/>
+            </div>
+            <p>
+            <div class="left">
+                Direct Link <input class="viewer_links" name="Direct Link" value="{{ directlink }}"/>
+            </div>
+            <p>
+            <div class="left">
+                <a id="rt" href="#">Raw Text</a>
+                <a id="he" href="#">Html Entity Code</a>
+            </div>
+            <div class="jq-dialog">
+               <div id="dialog-raw" title="Raw Content">
+                   <textarea id="tx-raw">loading...</textarea>
+               </div>
+            </div>
+        </div>
         <script>
-            $("#pa").button();
+            $("#rt").button();
+            $("#he").button();
+            $("#rt").click( function() {
+                $("#dialog-raw").dialog("open");
+                $(".ui-dialog-title").text("Raw Text");
+                $("#tx-raw").text("loading...");
+                $.get("/rawtext/{{ pid }}",function(data) {
+                    $("#tx-raw").html(data);
+                });
+            });
+            $("#he").click( function() {
+                $("#dialog-raw").dialog("open");
+                $(".ui-dialog-title").text("Html Entity Code (anti hexie)");
+                $("#tx-raw").text("loading...");
+                $.get("/rawtext/{{ pid }}",function(data) {
+                    $("#tx-raw").text(data);
+                });
+            });
+            $(".viewer_links").mouseenter( function(){
+                this.focus();
+                this.select();
+            });
+            $("#dialog-raw").dialog({
+                modal: true,
+                width: 640,
+                height: 320,
+                autoOpen: false,
+                buttons: {
+                     "OK": function() { $(this).dialog("close"); }
+                }
+            });
         </script>
         <p>
-        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image">get source code</a>
+    <div>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7790241779679682";
+/* paste2image.footer */
+google_ad_slot = "8341871657";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><p>
+        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image" target="_blank">get source code</a>
+    </div>
     </body>
 </html>

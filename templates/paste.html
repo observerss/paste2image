@@ -2,6 +2,8 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="keywords" content="text,image,convert,sytle,highlight">
+        <meta name="description" content="An web app that can convert text to image, works like paste2.org, with highlight and formatting ability. Written in tornado+mongodb, source code available.">
         <title>Paste2Image, paste text, get image</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
@@ -20,26 +22,64 @@
             color: #444;
             font-size: 90%;
         }
+        select {
+            width: 195px;
+        }
+        .paste{
+            display: block;
+            width: 600px;
+        }
+        #to_paste {
+            width: 100%;
+        }
+        .ui-autocomplete-input {
+            width: 155px;
+        }
+        .text{
+            width: 30px;
+            text-align: right;
+        }
+        .submit{
+            float:right;
+        }
         </style>
     </head>
     <body>
     <div class="container">
+    <div style="float:right">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7790241779679682";
+/* paste2image.righttop */
+google_ad_slot = "4112678371";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+    </div>
         <h2 class="ui-widget">
             <a href="/"><img src="/static/logo.png"></a>
         </h2>
+        <div class="paste">
         <p class="ui-widget">Paste text into the box below, get an image immediately</p>
         <form class="pasteform" action="/paste" method="post">
-            <div><textarea class="ui-widget" name="content" rows="8" cols="50"></textarea></div>
+            <div><textarea id="to_paste" class="ui-widget" name="content" rows="8" cols="50"></textarea></div>
+            <p>
             <div>
                 <select name="language">
                     <option value='text'>Select Langueage(Highlight) ...</option>
                     <option value='text' selected>Plain Text / Other</option>
-                    <option value='php'>PHP</option>
-                    <option value='mysql'>MySQL</option>
-                    <option value='javascript'>Javascript</option>
                     <option value='python'>Python</option>
-
                     <option value='ruby'>Ruby</option>
+                    <option value='cpp'>C++</option>
+                    <option value='php'>PHP</option>
+                    <option value='javascript'>Javascript</option>
+                    <option value='java'>Java</option>
+                    <option value='html'>HTML</option>
+                    <option value='css'>CSS</option>
+
                     <option value='--'>-----------------------</option>
                     <option value='actionscript'>Actionscript</option>
                     <option value='ada'>Ada</option>
@@ -51,25 +91,21 @@
                     <option value='bash'>Bash</option>
                     <option value='c'>C</option>
                     <option value='cfm'>Cold Fusion</option>
-                    <option value='cpp'>C++</option>
 
                     <option value='csharp'>C#</option>
-                    <option value='css'>CSS</option>
                     <option value='d'>D</option>
                     <option value='delphi'>Delphi</option>
                     <option value='diff'>UNIX Diff</option>
                     <option value='eiffel'>Eiffel</option>
 
                     <option value='fortran'>Fortran</option>
-                    <option value='html4strict'>HTML 4 Strict</option>
                     <option value='ini'>Ini</option>
-                    <option value='java'>Java</option>
-                    <option value='java5'>Java5</option>
                     <option value='latex'>LaTeX</option>
 
                     <option value='lisp'>LISP</option>
                     <option value='lua'>Lua</option>
                     <option value='matlab'>MATLAB</option>
+                    <option value='mysql'>MySQL</option>
                     <option value='perl'>Perl</option>
                     <option value='qbasic'>QBasic / QuickBASIC</option>
                     <option value='robots'>Robots</option>
@@ -80,6 +116,16 @@
                     <option value='vbnet'>VB.NET</option>
                     <option value='winbatch'>Winbatch</option>
                     <option value='xml'>XML</option>
+                </select>
+                <select name="font_name">
+                    <option value="Microsoft YaHei">Select a Font ...</option>
+                    <option value="WenQuanYi Zen Hei Mono" selected>WQY MONO(文泉驿等宽正黑)</option>
+                    <option value="DejaVu Sans YuanTi Mono">Yuanti MONO(方正等宽准圆)</option>
+                    <option value="DejaVu Sans Mono">DejaVu Sans Mono(English)</option>
+                    <option value="TakaoPGothic">TakaoPGothic(日文字体)</option>
+                    <option value="Microsoft YaHei">Microsoft YaHei(微软雅黑)</option>
+                    <option value="AR PL UKai CN">AR PL UKai CN(楷体)</option>
+                    <option value="WenQuanYi Zen Hei">WQY Zen Hei(文泉驿正黑)</option>
                 </select>
                 <select name="style">
                     <option value="friendly">Select a Style ...</option>
@@ -102,55 +148,56 @@
                     <option>vs</option>
                     <option>tango</option>
                 </select>
-                <br>
-                <select name="font_name">
-                    <option value="Microsoft YaHei">Select a Font ...</option>
-                    <option value="DejaVu Sans YuanTi Mono" selected>Yuanti MONO(方正等宽准圆)</option>
-                    <option>DejaVu Sans Mono(English)</option>
-                    <option value="TakaoPGothic">TakaoPGothic(日文字体)</option>
-                    <option value="Microsoft YaHei">Microsoft YaHei(微软雅黑)</option>
-                    <option value="AR PL UKai CN">AR PL UKai CN(楷体)</option>
-                    <option value="WenQuanYi Zen Hei">WQY Zen Hei(文泉驿正黑)</option>
-                    <option value="WenQuanYi Zen Hei Mono">WQY MONO(文泉驿等宽正黑)</option>
-                </select>
-                <select name="font_size">
-                    <option value="14" selected>Select Font Size ...</option>
-                    <option>12</option>
-                    <option selected>14</option>
-                    <option>16</option>
-                    <option>18</option>
-                    <option>20</option>
-                    <option>22</option>
-                    <option>24</option>
-                    <option>26</option>
-                    <option>28</option>
-                    <option>30</option>
-                    <option>32</option>
-                </select>
             </div>
-            <p>
+                <p>
             <div>
-                <input type="checkbox" name="auto_newline" id="check2" checked><label for="check2">Auto Newline</label>
-                <input type="checkbox" name="line_numbers" id="check1" checked><label for="check1">Line Numbers</label>
-                <input type="submit" value="Click Here to Proceed">
+                Font Size <input class="text" type="text" name="font_size" value="14" />
+                &nbsp;&nbsp;Line Break(换行) <input class="text" type="text" name="line_break" value="80" />
+                &nbsp;&nbsp;<input type="checkbox" name="line_numbers" id="check1" checked><label for="check1">Line Numbers</label>
+                <input class="submit" type="submit" value="Submit">
             </div>
         </form>
         <div class="usage">
-            <p class="ui-widget">Usage:</p>
+            <p class="ui-widget">Tips:</p>
             <ul class="ui-widget" id="sortable">
-                <li>Please use *DejaVu Sans Mono* whenever pasting *ASCII* text</li>
                 <li>If you want to highlight certain lines of code, just prepend '^^' to the very start of the line(s).</li>
-                <li>CJK Charsets is supported, simply select Microsoft YaHei/AR PL UKai CN/WenQuanYi Zen Hei as font</li>
+                <li>Line width is calculated as "linebreak * width of 'M'" </li>
             </ul>
         </div>
         <script>
-            $("input:checkbox").button();
-            $("input:submit").button();
-            $("select").selectbox();
+            //$("input:checkbox").button();
+            //$("input:submit").button();
+            //$("select").selectbox();
             $("#sortable").sortable();
             $("#sortable").disableSelection();
+            $(".text").click( function (){
+                this.value="";
+            });
+            $(".text[name='font_size']").blur( function (){
+                if (this.value==""){
+                    this.value = 14;
+                }
+            });
+            $(".text[name='line_break']").blur( function (){
+                if (this.value==""){
+                    this.value = 80;
+                }
+            });
         </script>
-        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image">get source code</a>
+    </div>
+    <div>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7790241779679682";
+/* paste2image.footer */
+google_ad_slot = "8341871657";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><p>
+        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image" target="_blank">get source code</a>
     </div>
     </body>
 </html>

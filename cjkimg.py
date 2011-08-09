@@ -168,8 +168,7 @@ class FontManager(object):
         """
         Get the character size.
         """
-        return self.fonts['NORMAL'].getsize(u'我')
-        #return self.fonts['NORMAL'].getsize('M')
+        return self.fonts['NORMAL'].getsize('M')
 
     def get_font(self, bold, oblique):
         """
@@ -458,7 +457,8 @@ class ImageFormatter(Formatter):
                         font = self._get_style_font(style),
                         fill = self._get_text_color(style)
                     )
-                    charno += len(temp)
+                    from math import ceil
+                    charno += int(ceil(self.fonts.fonts['NORMAL'].getsize(temp)[0]/1.0/self.fontw))
                     maxcharno = max(maxcharno, charno)
                 if line.endswith('\n'):
                     # add a line for each extra line in the value
