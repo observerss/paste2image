@@ -193,8 +193,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                 $.cookie("font_size",$("[name=font_size]").val(),{expires:365});
                 $.cookie("style",$("[name=style]").val(),{expires:365});
                 $.cookie("line_break",$("[name=line_break]").val(),{expires:365});
-                $.cookie("line_numbers",$("[name=line_numbers]").val(),{expires:365});
-                $.cookie("anti_gfw",$("[name=anti_gfw]").val(),{expires:365});
+                $.cookie("line_numbers",$("[name=line_numbers]").attr("checked"),{expires:365});
+                $.cookie("anti_gfw",$("[name=anti_gfw]").attr("checked"),{expires:365});
                 $("#to_paste").val( he_text );
             });
             $(".text[name='line_break']").blur( function (){
@@ -209,8 +209,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                 $("select[name=style]").val($.cookie("style"));
                 $("[name=font_size]").val($.cookie("font_size"));
                 $("[name=line_break]").val($.cookie("line_break"));
-                $("[name=line_numbers]").val($.cookie("line_numbers"));
-                $("[name=anti_gfw]").val($.cookie("anti_gfw"));
+                $("[name=line_numbers]").attr("checked",$.cookie("line_numbers"));
+                $("[name=anti_gfw]").attr("checked",$.cookie("anti_gfw"));
             }
         </script>
     </div>
