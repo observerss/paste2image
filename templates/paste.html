@@ -8,6 +8,8 @@
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/jquery-ui.min.js"></script>
         <script src="/static/js/jquery.ui.selectbox.js"></script>
+        <script src="/static/js/encoder.js"></script>
+        <script src="/static/js/cookie.js"></script>
         <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />
         <style type="text/css">
         body{
@@ -152,6 +154,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                 Font Size <input class="text" type="text" name="font_size" value="14" />
                 &nbsp;&nbsp;Line Break(换行) <input class="text" type="text" name="line_break" value="80" />
                 &nbsp;&nbsp;<input type="checkbox" name="line_numbers" id="check1" checked><label for="check1">Line Numbers</label>
+                &nbsp;&nbsp;<input type="checkbox" name="anti_gfw" id="check2" checked><label for="check2">AntiGFW</label>
                 <input class="submit" type="submit" value="Submit">
             </div>
         </form>
@@ -176,11 +179,39 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                     this.value = 14;
                 }
             });
+            $(".pasteform").submit( function(){
+                var to_paste = $("#to_paste").val();
+                if ( $("#check2").attr("checked") ){
+                    var he_text = Encoder.htmlEncode( to_paste );
+                }else{
+                    var he_text = to_paste;
+                }
+                // save settings
+                $.cookie("settings_saved",true,{expires:365});
+                $.cookie("language",$("[name=language]").val(),{expires:365}); 
+                $.cookie("font_name",$("[name=font_name]").val(),{expires:365});
+                $.cookie("font_size",$("[name=font_size]").val(),{expires:365});
+                $.cookie("style",$("[name=style]").val(),{expires:365});
+                $.cookie("line_break",$("[name=line_break]").val(),{expires:365});
+                $.cookie("line_numbers",$("[name=line_numbers]").val(),{expires:365});
+                $.cookie("anti_gfw",$("[name=anti_gfw]").val(),{expires:365});
+                $("#to_paste").val( he_text );
+            });
             $(".text[name='line_break']").blur( function (){
                 if (this.value==""){
                     this.value = 80;
                 }
             });
+            //remeber current settings in cookie
+            if ( $.cookie("settings_saved") ){
+                $("select[name=language]").val($.cookie("language"));
+                $("select[name=font_name]").val($.cookie("font_name"));
+                $("select[name=style]").val($.cookie("style"));
+                $("[name=font_size]").val($.cookie("font_size"));
+                $("[name=line_break]").val($.cookie("line_break"));
+                $("[name=line_numbers]").val($.cookie("line_numbers"));
+                $("[name=anti_gfw]").val($.cookie("anti_gfw"));
+            }
         </script>
     </div>
     <div>
@@ -195,7 +226,11 @@ google_ad_height = 90;
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script><p>
-        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image" target="_blank">get source code</a>
+        &copy; 2011 paste2image.com, v0.1.4 |  
+        <a href="/static/about.html">about</a> |
+        <a href="/static/terms.html">terms</a> | 
+        <a href="/static/changelog.html">changelog</a> | 
+        <a href="https://github.com/observerss/paste2image" target="_blank">source</a> 
     </div>
     </body>
 </html>

@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <title>Paste2Image, paste text, get image</title>
+        <script src="/static/js/encoder.js"></script>
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/jquery-ui.min.js"></script>
         <script src="/static/js/jquery.ui.selectbox.js"></script>
@@ -79,23 +80,36 @@
             </div>
         </div>
         <script>
+            var rawtext = "";
             $("#rt").button();
             $("#he").button();
             $("#rt").click( function() {
                 $("#dialog-raw").dialog("open");
                 $(".ui-dialog-title").text("Raw Text");
                 $("#tx-raw").text("loading...");
-                $.get("/rawtext/{{ pid }}",function(data) {
-                    $("#tx-raw").html(data);
-                });
+                if (rawtext){
+                    data = Encoder.htmlDecode(rawtext);
+                    $("#tx-raw").text(data);
+                }else{
+                    $.get("/rawtext/{{ pid }}",function(data) {
+                        rawtext = data
+                        data = Encoder.htmlDecode(rawtext);
+                        $("#tx-raw").text(data);
+                    });
+                }
             });
             $("#he").click( function() {
                 $("#dialog-raw").dialog("open");
                 $(".ui-dialog-title").text("Html Entity Code (anti hexie)");
                 $("#tx-raw").text("loading...");
-                $.get("/rawtext/{{ pid }}",function(data) {
-                    $("#tx-raw").text(data);
-                });
+                if (rawtext) {
+                    $("#tx-raw").text(rawtext);
+                }else{
+                    $.get("/rawtext/{{ pid }}",function(data) {
+                        rawtext = data;
+                        $("#tx-raw").text(data);
+                    });
+                }
             });
             $(".viewer_links").mouseenter( function(){
                 this.focus();
@@ -124,7 +138,11 @@ google_ad_height = 90;
 <script type="text/javascript"
 src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script><p>
-        &copy; 2011 paste2image.com, <a href="https://github.com/observerss/paste2image" target="_blank">get source code</a>
+        &copy; 2011 paste2image.com, v0.1.4  
+        <a href="/static/about.html">about</a> |
+        <a href="/static/terms.html">terms</a> | 
+        <a href="/static/changelog.html">changelog</a> | 
+        <a href="https://github.com/observerss/paste2image" target="_blank">source</a> 
     </div>
     </body>
 </html>

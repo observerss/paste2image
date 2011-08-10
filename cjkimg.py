@@ -18,7 +18,7 @@ from pygments.util import get_bool_opt, get_int_opt, \
 
 # Import this carefully
 try:
-    from PIL import Image, ImageDraw, ImageFont
+    import Image, ImageDraw, ImageFont
     pil_available = True
 except ImportError:
     pil_available = False

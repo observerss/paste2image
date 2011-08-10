@@ -1,12 +1,12 @@
 ===========
 Paste2Image
 ===========
-:Info: Paste2Image is webapp which can convert text to image.
+:Info: Paste2Image is a webapp which can convert text to image.
 :Author: scv2duke (http://github.com/observerss)
 
 About
 =====
-- Paste2Image is webapp which can convert text to image.
+- Paste2Image is a webapp which can convert text to image.
 - Paste2Image is based on Tornado.web + MongoEngine + MongoDB
 - This can be a very simple demonstration of how these tools can work together.
 - There's no documentation except the source code itself.

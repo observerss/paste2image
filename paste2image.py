@@ -24,12 +24,21 @@ define("port", default=8888, help="run on the given port", type=int)
 
 loader = tornado.template.Loader("templates")
 
+import gridfs,pymongo
+fs = gridfs.GridFS(pymongo.Connection("%s:%s"%(DB_HOST,DB_PORT))[DB_NAME])
+
+def unicode_to_html_entity(s):
+    return u''.join( [ '&#'+str(ord(x))+';' for x in s ] )
+
+def html_entity_to_unicode(s):
+    return u''.join( [ unichr(int(x[2:])) for x in s.split(";") if x ] )
+
 def text2image(pid,content,language,style,font_name,font_size,line_numbers,hl_lines):
     from pygments import highlight
     from pygments.lexers import get_lexer_by_name
     from cjkimg import ImageFormatter
     from StringIO import StringIO
-    from PIL import Image
+    import Image
 
     try:
         p = Pasted.objects.get(pid=pid)
@@ -67,9 +76,12 @@ class PasteHandler(tornado.web.RequestHandler):
     def post(self):
         p = Pasted()
         p.content = self.get_argument("content","Please Paste some text!")
+        if self.get_argument("anti_gfw",False):
+            p.content = html_entity_to_unicode(p.content)
         p.save()
 
         lines = p.content.split('\n')
+        lines = [ x for x in lines if x ]
 
         lines,hl_lines = self.format_lines(lines)
 
@@ -143,8 +155,6 @@ class PasteHandler(tornado.web.RequestHandler):
 
 def file_read(pid):
     try:
-        import gridfs,pymongo
-        fs = gridfs.GridFS(pymongo.Connection("%s:%s"%(DB_HOST,DB_PORT))[DB_NAME])
         f = fs.get_version(filename="%s.png"%pid)
         data = f.read()
         content_type = "image/png"
@@ -152,7 +162,6 @@ def file_read(pid):
     except Exception,what:
         logging.error(repr(what))
         return '',''
-
 
 class ViewImageHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
@@ -176,23 +185,12 @@ class ViewImageHandler(tornado.web.RequestHandler):
 class RawTextHandler(tornado.web.RequestHandler):
     def get(self,pid):
         try:
-            self.set_header('Content-Type','text/html; charset=utf-8')
-            p = Pasted.objects.get(pid=pid)
-            content = u''.join( [ '&#'+str(ord(x))+';' for x in p.content ] )
-            self.write(content)
-        except:
-            self.write('')
-
-class HtmlEntityHandler(tornado.web.RequestHandler):
-    def get(self,pid):
-        try:
             self.set_header('Content-Type','text/plain; charset=utf-8')
             p = Pasted.objects.get(pid=pid)
-            content = u''.join( [ '&#'+str(ord(x))+';' for x in p.content ] )
+            content = unicode_to_html_entity(p.content)
             self.write(content)
         except:
             self.write('')
-
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -205,7 +203,6 @@ def main():
         (r"/view/(.*)", ViewImageHandler),
         (r"/paste", PasteHandler),
         (r"/rawtext/(.*)",RawTextHandler),
-        (r"/htmlentity/(.*)",HtmlEntityHandler),
         (r"/", MainHandler),
     ],
         static_path=os.path.join(os.path.dirname(__file__),"static"),
