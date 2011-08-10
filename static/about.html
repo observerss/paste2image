@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="keywords" content="text,image,convert,sytle,highlight">
+        <meta name="description" content="An web app that can convert text to image, works like paste2.org, with highlight and formatting ability. Written in tornado+mongodb, source code available.">
+        <title>Paste2Image, paste text, get image</title>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/jquery-ui.min.js"></script>
+        <script src="/static/js/jquery.ui.selectbox.js"></script>
+        <script src="/static/js/encoder.js"></script>
+        <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />
+        <style type="text/css">
+        body{
+            width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Helvetica, Arial, sans-serif;
+            background-color: #eee;
+            color: #444;
+            font-size: 90%;
+        }
+        select {
+            width: 195px;
+        }
+        .paste{
+            display: block;
+            width: 600px;
+        }
+        #to_paste {
+            width: 100%;
+        }
+        .ui-autocomplete-input {
+            width: 155px;
+        }
+        .text{
+            width: 30px;
+            text-align: right;
+        }
+        .submit{
+            float:right;
+        }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+    <div style="float:right">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7790241779679682";
+/* paste2image.righttop */
+google_ad_slot = "4112678371";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+    </div>
+        <h2 class="ui-widget">
+            <a href="/"><img src="/static/logo.png"></a>
+        </h2>
+        <div class="about">
+            <h2>What is Image2Paste?</h2>
+            Image2Paste is a free web service that can convert text to image in a preferred style.<br>
+            It is also an open source project hosted on <a href="https://github.com/observerss/paste2image">github</a>
+            <h2>Why Image2Paste?</h2>
+            <b>-Avoid censorship</b>: text is vulnerable to censorship(e.g. GFW), but image isn't<br>
+            <b>-Avoid crawlers/spammers</b>: imaged text will be "invisible" to those robots<br>
+            <b>-Keep styles</b>: imaged text is styled as is, it will not change in different web pages<br>
+            <h2>Any limits on text size?</h2>
+            A single text is limited to under 500 lines due to performance concern, however you can convert whatever amount of text as you wish.
+            <h2>How long will you keep the image?</h2>
+            The converted images will stick around forever.
+        </div>
+    </div>
+    <div>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7790241779679682";
+/* paste2image.footer */
+google_ad_slot = "8341871657";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><p>
+        &copy; 2011 paste2image.com, v0.1.4 |  
+        <a href="/static/about.html">about</a> |
+        <a href="/static/terms.html">terms</a> | 
+        <a href="/static/changelog.html">changelog</a> | 
+        <a href="https://github.com/observerss/paste2image" target="_blank">source</a> 
+    </div>
+    </body>
+</html>
