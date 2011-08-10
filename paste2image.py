@@ -75,8 +75,9 @@ class PasteHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def post(self):
         p = Pasted()
-        p.content = self.get_argument("content","Please Paste some text!")
-        if self.get_argument("anti_gfw",False):
+        PLEASE = u"Please Paste some text!"
+        p.content = self.get_argument("content",PLEASE)
+        if self.get_argument("anti_gfw",False) and p.content != PLEASE:
             p.content = html_entity_to_unicode(p.content)
         p.save()
 
