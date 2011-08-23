@@ -16,6 +16,9 @@ import tornado.template
 import json
 import logging
 import os
+import email
+import datetime
+import time
 
 from multiprocessing import Pool
 
@@ -159,10 +162,10 @@ def file_read(pid):
         f = fs.get_version(filename="%s.png"%pid)
         data = f.read()
         content_type = "image/png"
-        return content_type,data
+        return content_type,f.upload_date,data
     except Exception,what:
         logging.error(repr(what))
-        return '',''
+        return '','',''
 
 class ViewImageHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
@@ -179,7 +182,21 @@ class ViewImageHandler(tornado.web.RequestHandler):
         pool.apply_async(file_read,(pid,),callback=self.on_read) 
     
     def on_read(self,data):
-        content_type,data = data
+        content_type,upload_date,data = data
+        # cache control
+        self.set_header("Last-Modified",upload_date)
+        self.set_header("Cache-Control", "public")
+        ims_value = self.request.headers.get("If-Modified-Since")
+        if ims_value is not None:
+            date_tuple = email.utils.parsedate(ims_value)
+            if_since = datetime.datetime.fromtimestamp(time.mktime(date_tuple))
+            d = upload_date
+            last_modified = datetime.datetime(d.year,d.month,d.day,d.hour,d.minute,d.second)
+            if if_since >= last_modified:
+                self.set_status(304)
+                self.finish()
+                return
+        # return image data
         self.set_header('Content-Type',content_type)
         self.finish(data)
 
